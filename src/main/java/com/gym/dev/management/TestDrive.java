@@ -18,7 +18,8 @@ import jakarta.persistence.Persistence;
 public class TestDrive {
 	
 	public static void main(String args[]) {
-		testDataSource("postgresql");
+		Client client = new Client("Egor", "Akimov", "kakashka@ya.org");
+		persistClient(client);
 	}
 	
 	public static void testDataSource(String dbType) {
@@ -38,7 +39,7 @@ public class TestDrive {
 	}
 	
 	public static void testHibernate() {
-EntityManagerFactory emf = Persistence.createEntityManagerFactory("ClientPU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ClientPU");
 		
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -55,4 +56,20 @@ EntityManagerFactory emf = Persistence.createEntityManagerFactory("ClientPU");
 			System.out.println(client.getFirstName() + " " + client.getLastName());
 		}
 	}
+
+	public static void persistClient(Client client) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ClientPU");
+		
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		tx.begin();
+		
+		em.persist(client);
+		
+		tx.commit();
+		em.close();
+	}
+
 }
+
